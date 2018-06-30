@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
@@ -10,9 +11,17 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
+app.post('/todos', (req, res) => {
+    var user = new User({
+        text: req.body.text
+    });
 
-
-
+    todo.save().then((doc) => {
+        res.send(doc);
+    }, (e) => {
+        res.status(400).send(e);
+    });
+});
 
 
 
