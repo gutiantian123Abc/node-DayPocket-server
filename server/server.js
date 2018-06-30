@@ -55,16 +55,21 @@ app.get('/users/:username', (req, res) => {
         return res.status(404).send();
     }
 
-    User.findById(id).then((todo) => {
-        if (!todo) {
+    User.find({ user_name: user_name}).then((user) => {
+        if(!user) {
             return res.status(404).send();
         }
 
-        res.send({todo});
+        res.send({user});
+
     }).catch((e) => {
         res.status(400).send();
     });
+
 });
+
+
+
 
 
 
