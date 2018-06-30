@@ -13,6 +13,18 @@ var User = mongoose.model('User', {
         trim: true,
         min_length: 1
     },
+    first_name: {
+        type: String,
+        required: false,
+        trim: true,
+        min_length: 1
+    },
+    last_name: {
+        type: String,
+        required: false,
+        trim: true,
+        min_length: 1
+    },
     email: {
         type: String,
         required: false,
@@ -28,6 +40,14 @@ var User = mongoose.model('User', {
         required: false
     },
     job: {
+        type: String,
+        required: false
+    },
+    income: {
+        type: Number,
+        required: false
+    },
+    PayPal_account_number: {
         type: String,
         required: false
     },
