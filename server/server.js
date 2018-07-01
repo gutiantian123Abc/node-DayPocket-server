@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
@@ -50,14 +51,12 @@ app.get('/users', (req, res) => {
 
 app.get('/users/:username', (req, res) => {
     var user_name = req.params.username;
+    console.log("User name is " + user_name);
 
-    if (!ObjectID.isValid(id)) {
-        return res.status(404).send();
-    }
-
-    User.find({ user_name: user_name}).then((user) => {
+    User.find({ username: user_name}).then((user) => {
         if(!user) {
             return res.status(404).send();
+            console.log("not find");
         }
 
         res.send({user});
@@ -68,6 +67,33 @@ app.get('/users/:username', (req, res) => {
 
 });
 
+
+
+app.patch('/users/:username', (req, res) => {
+    var id = req.params.id;
+    var body = _.pick(req.body, ['text', 'completed']);
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    if (_.isBoolean(body.completed) && body.completed) {
+        body.completedAt = new Date().getTime();
+    } else {
+        body.completed = false;
+        body.completedAt = null;
+    }
+
+    Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo) => {
+        if (!todo) {
+            return res.status(404).send();
+        }
+
+        res.send({todo});
+    }).catch((e) => {
+        res.status(400).send();
+    })
+});
 
 
 
